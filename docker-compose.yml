@@ -1,0 +1,46 @@
+version: '3.9'
+
+services:
+  crawler:
+    container_name: gm_crawler
+    image: services/crawler
+    build:
+      context: ./services/crawler
+    ports:
+      - 8080:8080
+    volumes:
+      - ./services/crawler:/app
+    depends_on:
+      - rabbitmq
+
+  storefront:
+    container_name: gm_storefront
+    image: services/storefront
+    build:
+      context: ./services/storefront
+    ports:
+      - 8081:8081
+    volumes:
+      - ./services/storefront:/app
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+  
+  rabbitmq:
+    image: services/rabbitmq
+    build:
+      context: ./services/rabbitmq
+    container_name: gm_rabbitmq
+    ports:
+      - 5672:5672
+      - 15672:15672
+    logging:
+      driver: none
+    volumes:
+      - .data/rabbitmq/data:/var/lib/rabbitmq
+      - .data/rabbitmq/log:/var/log/rabbitmq
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:15672"]
+      interval: 3s
+      timeout: 10s
+      retries: 5
