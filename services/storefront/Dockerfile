@@ -10,5 +10,8 @@ RUN go mod download
 # Copy app files
 COPY . .
 
+# Install Air Package for live reload
+RUN go install github.com/cosmtrek/air@latest
+
 # Start app
-CMD go run ./cmd/main.go
+CMD air

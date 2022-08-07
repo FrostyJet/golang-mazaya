@@ -10,8 +10,8 @@ RUN go mod download
 # Copy app files
 COPY . .
 
-# Install Reflex for development
-RUN go install github.com/cespare/reflex@latest
+# Install Air Package for live reload
+RUN go install github.com/cosmtrek/air@latest
 
 # Start app
-CMD reflex -g './**/*.go' go run main.go --start-service
+CMD air
