@@ -24,6 +24,13 @@ func NewRecipeService(r domain.RecipeRepository) domain.RecipeService {
 	return instance
 }
 
-func (*recipeService) Save() {
+func (r *recipeService) Create(data *domain.Recipe) (*domain.Recipe, error) {
 	log.Println("Insert has been called!")
+
+	_, err := r.recipeRepository.Create(data)
+	if err != nil {
+		return nil, err
+	}
+
+	return data, nil
 }

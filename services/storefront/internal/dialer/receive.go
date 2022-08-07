@@ -1,8 +1,6 @@
 package dialer
 
 import (
-	"golang-mazaya/storefront/internal/repository"
-	"golang-mazaya/storefront/internal/service"
 	"log"
 
 	amqp "github.com/rabbitmq/amqp091-go"
@@ -12,11 +10,6 @@ func failOnError(err error, msg string) {
 	if err != nil {
 		log.Panicf("%s: %s", msg, err)
 	}
-}
-
-func TestSave() {
-	s := service.NewRecipeService(repository.NewRecipeRepository())
-	s.Save()
 }
 
 func Subscribe(queue string, handler func(msg []byte)) {
